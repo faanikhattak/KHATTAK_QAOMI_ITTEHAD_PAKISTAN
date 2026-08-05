@@ -17,3 +17,5 @@ PyYAML
 uvloop
 requests
 annotated-doc
+flet-web==0.84.0
+watchfiles
