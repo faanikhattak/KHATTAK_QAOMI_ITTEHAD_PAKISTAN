@@ -362,8 +362,21 @@ async def main(page: ft.Page):
 
 
 # ═══════════════════════════════════════════════════════════════
-#  ENTRYPOINT (Dynamic Port Allocation & Cleanup)
+#  ENTRYPOINT (Dynamic Free Port Finder & Signal Fix)
 # ═══════════════════════════════════════════════════════════════
+import socket
+
+def find_free_port(start_port: int = 8550) -> int:
+    """خالی پورٹ تلاش کرنے کا فنکشن تاکہ Port Collision نہ ہو۔"""
+    for p in range(start_port, start_port + 50):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("0.0.0.0", p))
+                return p
+            except OSError:
+                continue
+    return start_port
+
 if __name__ == "__main__":
     if not os.path.exists("uploads"):
         os.makedirs("uploads")
@@ -381,22 +394,12 @@ if __name__ == "__main__":
                 return None
         signal.signal = safe_signal
 
-    # 2. Port Binding Logic (Address already in use کا فکس)
-    port = int(os.environ.get("PORT", 8550))
-    
-    try:
-        ft.run(
-            main,
-            port=port,
-            view=ft.AppView.WEB_BROWSER,
-        )
-    except OSError as e:
-        if e.errno == 98 or "address already in use" in str(e).lower():
-            print(f"[PORT CONFLICT] Port {port} is busy. Retrying on port {port + 1}...")
-            ft.run(
-                main,
-                port=port + 1,
-                view=ft.AppView.WEB_BROWSER,
-            )
-        else:
-            raise e
+    # 2. خودکار طور پر خالی پورٹ حاصل کریں
+    free_port = find_free_port(8550)
+    print(f"[SERVER START] Binding Flet Web App on free port: {free_port}")
+
+    ft.run(
+        main,
+        port=free_port,
+        view=ft.AppView.WEB_BROWSER,
+    )
