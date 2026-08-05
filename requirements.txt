@@ -13,4 +13,6 @@ cryptography==47.0.0
 bcrypt==5.0.0
 flet==0.84.0
 pyperclip
+PyYAML
 uvloop
+requests
