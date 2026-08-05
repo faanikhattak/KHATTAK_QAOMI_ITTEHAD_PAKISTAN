@@ -380,18 +380,14 @@ if __name__ == "__main__":
     if not os.path.exists("uploads"):
         os.makedirs("uploads")
 
-    # ft.run کے بجائے ft.app استعمال کریں تاکہ Streamlit میں سگنلز اور وایب ساکٹ صحیح کام کریں
-    if __name__ == "__main__":
-        if not os.path.exists("uploads"):
-            os.makedirs("uploads")
-    
-        ft.app(
-            target=main,
-            port=8550,
-            assets_dir="assets",
-            upload_dir="uploads",
-            view=ft.AppView.WEB_BROWSER,
-        )
+    # Flet 0.84 کے مطابق ft.app کا درست سنٹیکس
+    ft.app(
+        target=main,
+        port=8550,
+        assets_dir="assets",
+        upload_dir="uploads",
+        view=ft.AppView.WEB_BROWSER,
+    )
 
 
 
