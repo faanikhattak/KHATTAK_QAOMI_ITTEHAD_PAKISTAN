@@ -362,18 +362,32 @@ async def main(page: ft.Page):
 
 
 # ═══════════════════════════════════════════════════════════════
-#  ENTRYPOINT
+#  ENTRYPOINT (Fixes Streamlit Multi-Threading & Signal Error)
 # ═══════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     if not os.path.exists("uploads"):
         os.makedirs("uploads")
 
-    if os.environ.get("FLET_PLATFORM"):
-        ft.run(main)
-    else:
-        port = int(os.environ.get("PORT", 8550))
-        ft.run(
-            main,
+    port = int(os.environ.get("PORT", 8550))
+
+    # Streamlit/Secondary Thread کے اندر Flet سگنل ایرر بائی پاس کرنے کے لیے
+    import threading
+
+    def start_flet():
+        ft.app(
+            target=main,
             port=port,
             view=ft.AppView.WEB_BROWSER,
         )
+
+    # اگر مین تھریڈ میں نہ ہو تو نیا ایونٹ لوپ بنا کر رن کریں
+    try:
+        start_flet()
+    except ValueError as ve:
+        if "signal only works in main thread" in str(ve):
+            import asyncio
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            start_flet()
+        else:
+            raise ve
