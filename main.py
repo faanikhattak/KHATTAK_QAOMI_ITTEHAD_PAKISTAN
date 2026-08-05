@@ -381,7 +381,7 @@ if __name__ == "__main__":
         os.makedirs("uploads")
 
     # Flet 0.84 کے مطابق ft.app کا درست سنٹیکس
-    ft.app(
+    ft.run(
         target=main,
         port=8550,
         assets_dir="assets",
