@@ -362,7 +362,7 @@ async def main(page: ft.Page):
 
 
 # ═══════════════════════════════════════════════════════════════
-#  ENTRYPOINT (Streamlit Thread & Signal Bypass)
+#  ENTRYPOINT (Streamlit Thread, Signal & Package Lock Bypass)
 # ═══════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     if not os.path.exists("uploads"):
@@ -370,7 +370,7 @@ if __name__ == "__main__":
 
     port = int(os.environ.get("PORT", 8550))
 
-    # Streamlit Sub-thread میں signal.signal کا کریش روکنے کے لیے bypass:
+    # 1. Streamlit Thread Signal Bypass
     import signal
     import threading
 
@@ -380,13 +380,12 @@ if __name__ == "__main__":
             try:
                 return orig_signal(sig, handler)
             except ValueError:
-                # Secondary thread میں سگنل ایرر کو چپ چاپ بائی پاس کریں
                 return None
         signal.signal = safe_signal
 
-    # Flet App کو رن کریں
-    ft.app(
-        target=main,
+    # 2. ft.run Call (Avoids app deprecation & runtime installs)
+    ft.run(
+        main,
         port=port,
         view=ft.AppView.WEB_BROWSER,
     )
