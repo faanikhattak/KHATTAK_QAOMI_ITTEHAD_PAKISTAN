@@ -10,3 +10,6 @@
 2026-08-05 14:32:48,925 | INFO | flet_web.fastapi | New FletApp: hBUc8Sb0
 2026-08-05 14:32:48,969 | INFO | flet_web.fastapi | New session created (1 total): _AHINNtM7FqiDeopt_7b098b11c06442e53a3cca17bf52017694ce45d2
 2026-08-05 14:32:48,979 | INFO | flet_web.fastapi | Start session: AHINNtM7FqiDeopt
+2026-08-05 21:01:42,524 | INFO | flet_web.fastapi | Web renderer configured: WebRenderer.AUTO
+2026-08-05 21:01:42,532 | INFO | flet_web.fastapi | Route URL strategy configured: RouteUrlStrategy.PATH
+2026-08-05 21:01:42,532 | INFO | flet_web.fastapi | No CDN configured: False
