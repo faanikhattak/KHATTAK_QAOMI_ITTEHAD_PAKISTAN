@@ -11,5 +11,6 @@ pillow==12.2.0
 qrcode==8.2
 cryptography==47.0.0
 bcrypt==5.0.0
-flet
+flet==0.84.0
 pyperclip
+uvloop
