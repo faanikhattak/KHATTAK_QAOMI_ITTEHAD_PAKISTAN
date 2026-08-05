@@ -16,3 +16,4 @@ pyperclip
 PyYAML
 uvloop
 requests
+annotated-doc
