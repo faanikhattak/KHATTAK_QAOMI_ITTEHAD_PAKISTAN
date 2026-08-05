@@ -362,13 +362,11 @@ async def main(page: ft.Page):
 
 
 # ═══════════════════════════════════════════════════════════════
-#  ENTRYPOINT (Streamlit Thread, Signal & Package Lock Bypass)
+#  ENTRYPOINT (Dynamic Port Allocation & Cleanup)
 # ═══════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     if not os.path.exists("uploads"):
         os.makedirs("uploads")
-
-    port = int(os.environ.get("PORT", 8550))
 
     # 1. Streamlit Thread Signal Bypass
     import signal
@@ -383,9 +381,22 @@ if __name__ == "__main__":
                 return None
         signal.signal = safe_signal
 
-    # 2. ft.run Call (Avoids app deprecation & runtime installs)
-    ft.run(
-        main,
-        port=port,
-        view=ft.AppView.WEB_BROWSER,
-    )
+    # 2. Port Binding Logic (Address already in use کا فکس)
+    port = int(os.environ.get("PORT", 8550))
+    
+    try:
+        ft.run(
+            main,
+            port=port,
+            view=ft.AppView.WEB_BROWSER,
+        )
+    except OSError as e:
+        if e.errno == 98 or "address already in use" in str(e).lower():
+            print(f"[PORT CONFLICT] Port {port} is busy. Retrying on port {port + 1}...")
+            ft.run(
+                main,
+                port=port + 1,
+                view=ft.AppView.WEB_BROWSER,
+            )
+        else:
+            raise e
