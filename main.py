@@ -362,21 +362,10 @@ async def main(page: ft.Page):
 
 
 # ═══════════════════════════════════════════════════════════════
-#  ENTRYPOINT (Streamlit & Flet Bridge)
+#  ENTRYPOINT (Streamlit & Flet Web Bridge - No Localhost Error)
 # ═══════════════════════════════════════════════════════════════
-import socket
 import streamlit as st
-
-def find_free_port(start_port: int = 8550) -> int:
-    """خالی پورٹ تلاش کرنے کا فنکشن"""
-    for p in range(start_port, start_port + 50):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            try:
-                s.bind(("0.0.0.0", p))
-                return p
-            except OSError:
-                continue
-    return start_port
+import flet.fastapi as flet_fastapi
 
 if __name__ == "__main__":
     if not os.path.exists("uploads"):
@@ -395,30 +384,13 @@ if __name__ == "__main__":
                 return None
         signal.signal = safe_signal
 
-    # 2. Flet کو بیک گراؤنڈ تھریڈ میں چالو کریں
-    free_port = find_free_port(8550)
-
-    if "flet_started" not in st.session_state:
-        st.session_state["flet_started"] = True
-        
-        def run_flet_bg():
-            ft.run(
-                main,
-                port=free_port,
-                view=ft.AppView.WEB_BROWSER,
-            )
-
-        flet_thread = threading.Thread(target=run_flet_bg, daemon=True)
-        flet_thread.start()
-
-    # 3. Streamlit Page Configuration (Full Screen)
+    # 2. Streamlit Screen Layout Setup
     st.set_page_config(
         page_title="KHATTAK QOMI ITTEHAD PAKISTAN",
         layout="wide",
         initial_sidebar_state="collapsed",
     )
 
-    # CSS سے Streamlit کے اوپر والے ہیڈر اور مارجنز ختم کریں
     st.markdown("""
         <style>
             #MainMenu {visibility: hidden;}
@@ -430,14 +402,34 @@ if __name__ == "__main__":
                 padding-left: 0rem !important;
                 padding-right: 0rem !important;
             }
-            iframe {
-                width: 100% !important;
-                height: 100vh !important;
-                border: none !important;
-            }
         </style>
     """, unsafe_allow_html=True)
 
-    # 4. Flet ایپ کو Streamlit iframe کے اندر رینڈر کریں
-    flet_url = f"http://localhost:{free_port}"
-    st.components.v1.iframe(flet_url, height=800, scrolling=True)
+    # 3. Streamlit Cloud پر 0.0.0.0 IP بائنڈنگ
+    port = int(os.environ.get("PORT", 8501))
+
+    if "flet_app_running" not in st.session_state:
+        st.session_state["flet_app_running"] = True
+        
+        def run_flet_server():
+            try:
+                ft.app(
+                    target=main,
+                    port=8550,
+                    host="0.0.0.0",
+                    view=ft.AppView.WEB_BROWSER,
+                )
+            except Exception as e:
+                print(f"[FLET SERVER ERROR] {e}")
+
+        server_thread = threading.Thread(target=run_flet_server, daemon=True)
+        server_thread.start()
+
+    # 4. 0.0.0.0 IP اور HTML Embed کے ذریعے ڈسپلے
+    st.components.v1.html(
+        f"""
+        <iframe src="http://0.0.0.0:8550" style="width:100%; height:100vh; border:none; margin:0; padding:0;"></iframe>
+        """,
+        height=850,
+        scrolling=True
+    )
