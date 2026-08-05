@@ -1,0 +1,12 @@
+2026-08-05 12:19:17,852 | INFO | flet_web.fastapi | Delete session (2 left): _MD8KdYpESUb9fdWb_7b098b11c06442e53a3cca17bf52017694ce45d2
+2026-08-05 12:19:17,852 | INFO | flet_web.fastapi | Delete session (1 left): _lUZKlmKuIPjsxKOd_7b098b11c06442e53a3cca17bf52017694ce45d2
+2026-08-05 14:32:46,109 | INFO | flet_web.fastapi | Web renderer configured: WebRenderer.AUTO
+2026-08-05 14:32:46,110 | INFO | flet_web.fastapi | Route URL strategy configured: RouteUrlStrategy.PATH
+2026-08-05 14:32:46,110 | INFO | flet_web.fastapi | No CDN configured: False
+2026-08-05 14:32:46,158 | INFO | flet_web.fastapi | Starting up Flet App Manager
+2026-08-05 14:32:46,638 | INFO | flet_web.fastapi | Temp dir created for patched index and manifest: C:\Users\irfan\AppData\Local\Temp\tmpan3_t_3v
+2026-08-05 14:32:46,638 | INFO | flet_web.fastapi | Web root: C:\Users\irfan\miniconda3\envs\bd_apk_stable\Lib\site-packages\flet_web\web
+2026-08-05 14:32:46,643 | INFO | flet_web.fastapi | Assets dir: D:\under dev apps\KTK QOAMI ITEHAD
+2026-08-05 14:32:48,925 | INFO | flet_web.fastapi | New FletApp: hBUc8Sb0
+2026-08-05 14:32:48,969 | INFO | flet_web.fastapi | New session created (1 total): _AHINNtM7FqiDeopt_7b098b11c06442e53a3cca17bf52017694ce45d2
+2026-08-05 14:32:48,979 | INFO | flet_web.fastapi | Start session: AHINNtM7FqiDeopt

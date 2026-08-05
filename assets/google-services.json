@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "143201832325",
+    "project_id": "khattakqomiitehadpakista-42d83",
+    "storage_bucket": "khattakqomiitehadpakista-42d83.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143201832325:android:b3312c6d56661a051a08ec",
+        "android_client_info": {
+          "package_name": "org.khattakqomiitehad.kqip"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfEU6dBp-clCKuVnvuEvyk8PkYA65vrv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

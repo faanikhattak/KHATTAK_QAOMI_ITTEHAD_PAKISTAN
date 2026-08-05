@@ -1,0 +1,19 @@
+const urlParams = new URLSearchParams(window.location.search);
+const user_id = urlParams.get("user_id");
+fetch("http://127.0.0.1:8000/verify", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    user_id: user_id,
+    verified: true
+  })
+});
+
+<input id="phone" placeholder="+923XXXXXXXXX">
+<div id="recaptcha-container"></div>
+<button onclick="sendOTP()">Send OTP</button>
+
+<input id="otp" placeholder="Enter OTP">
+<button onclick="verifyOTP()">Verify</button>

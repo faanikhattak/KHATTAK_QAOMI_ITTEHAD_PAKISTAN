@@ -1,0 +1,46 @@
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+# Flet & Mobile Builds (Buildozer / Flutter artifacts)
+.buildozer/
+bin/
+build/
+dist/
+*.apk
+*.aab
+*.ipa
+
+# Environment & Secret Files (Supabase keys, API credentials)
+.env
+.env.local
+*.env
+secrets.json
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.user
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+desktop.ini
+AppData/
+
+# Logs & Temporary Files
+*.log
+*.tmp
+*.temp
