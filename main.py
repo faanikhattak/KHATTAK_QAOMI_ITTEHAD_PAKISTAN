@@ -362,7 +362,7 @@ async def main(page: ft.Page):
 
 
 # ═══════════════════════════════════════════════════════════════
-#  ENTRYPOINT (Fixes Streamlit Multi-Threading & Signal Error)
+#  ENTRYPOINT (Streamlit Thread & Signal Bypass)
 # ═══════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     if not os.path.exists("uploads"):
@@ -370,24 +370,23 @@ if __name__ == "__main__":
 
     port = int(os.environ.get("PORT", 8550))
 
-    # Streamlit/Secondary Thread کے اندر Flet سگنل ایرر بائی پاس کرنے کے لیے
+    # Streamlit Sub-thread میں signal.signal کا کریش روکنے کے لیے bypass:
+    import signal
     import threading
 
-    def start_flet():
-        ft.app(
-            target=main,
-            port=port,
-            view=ft.AppView.WEB_BROWSER,
-        )
+    if threading.current_thread() is not threading.main_thread():
+        orig_signal = signal.signal
+        def safe_signal(sig, handler):
+            try:
+                return orig_signal(sig, handler)
+            except ValueError:
+                # Secondary thread میں سگنل ایرر کو چپ چاپ بائی پاس کریں
+                return None
+        signal.signal = safe_signal
 
-    # اگر مین تھریڈ میں نہ ہو تو نیا ایونٹ لوپ بنا کر رن کریں
-    try:
-        start_flet()
-    except ValueError as ve:
-        if "signal only works in main thread" in str(ve):
-            import asyncio
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            start_flet()
-        else:
-            raise ve
+    # Flet App کو رن کریں
+    ft.app(
+        target=main,
+        port=port,
+        view=ft.AppView.WEB_BROWSER,
+    )
